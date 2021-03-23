@@ -1,0 +1,192 @@
+﻿<Page x:Class="FitnessDiary.Uwp.App.Views.AddExercisePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:Template10.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:vm="using:FitnessDiary.Uwp.App.ViewModels" mc:Ignorable="d">
+
+    <Page.DataContext>
+        <vm:AddExercisePageViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+
+    <Page.Resources>
+        <CollectionViewSource
+            x:Name="bodytypesViewSource"
+            Source="{x:Bind ViewModel.Bodytypes}">
+        </CollectionViewSource>
+    </Page.Resources>
+
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <controls:PageHeader x:Name="pageHeader" RelativePanel.AlignLeftWithPanel="True"
+                             RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True" Text="Fitness Diary" Content="Fitness Diary">
+
+            <!--  secondary commands -->
+            <controls:PageHeader.SecondaryCommands>
+                <AppBarButton Click="{x:Bind ViewModel.GotoSettings}" Label="Settings" />
+                <AppBarButton Click="{x:Bind ViewModel.GotoPrivacy}" Label="Privacy" />
+                <AppBarButton Click="{x:Bind ViewModel.GotoAbout}" Label="About" />
+            </controls:PageHeader.SecondaryCommands>
+        </controls:PageHeader>
+
+        <TextBlock x:Name="addExerciseText" 
+                   RelativePanel.Below="pageHeader"
+                   RelativePanel.AlignLeftWithPanel="True"
+                   Height="53" 
+                   TextWrapping="Wrap" 
+                   Text="Add Exercise" 
+                   Width="256" 
+                   Margin="10, 10, 10, 10" 
+                   FocusVisualPrimaryBrush="White" 
+                   FontSize="36"/>
+
+        <AppBarButton x:Name="webViewBackButton" 
+                      RelativePanel.Below="cancelButton"
+                      RelativePanel.AlignRightWith="webViewForwardButton"
+                      Height="46" 
+                      Icon="Back" 
+                      Margin="10, 0, 630, 10" 
+                      Width="40"/>
+
+        <AppBarButton x:Name="webViewForwardButton" 
+                      RelativePanel.Below="cancelButton"
+                      RelativePanel.AlignRightWith="URLTextBox"
+                      Height="46" 
+                      Icon="Forward" 
+                      Margin="10, 0, 600, 10" 
+                      Width="40"/>
+
+        <TextBox x:Name="URLTextBox" 
+                 RelativePanel.Below="cancelButton"
+                 RelativePanel.AlignRightWith="refreshButton"
+                 Height="32" 
+                 TextWrapping="Wrap" 
+                 Width="532" 
+                 Margin="10, 10, 60, 10" 
+                 PlaceholderText="Tast URL"/>
+
+        <AppBarButton x:Name="refreshButton" 
+                      RelativePanel.Below="cancelButton"
+                      RelativePanel.AlignRightWithPanel="True"
+                      Height="46" 
+                      Icon="Refresh" 
+                      Margin="10, 0, 10, 10" 
+                      Width="40"
+                      Click="RefreshButtonOnClick"/>
+
+        <WebView x:Name="webViewWindow" 
+                 RelativePanel.Below="URLTextBox"
+                 RelativePanel.AlignRightWithPanel="True"
+                 RelativePanel.AlignBottomWithPanel="True"
+                 RelativePanel.AlignLeftWith="addExercise"
+                 Margin="460, 10, 10, 10"           
+                 FocusVisualPrimaryBrush="White"
+                 Source="http://www.google.com"/>
+
+        <Grid x:Name="addExercise"
+              RelativePanel.Below="addExerciseText"
+              RelativePanel.AlignLeftWithPanel="True"
+              RelativePanel.AlignBottomWithPanel="True"
+              DataContext="{Binding Exercise}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="45"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="45"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="450"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="exerciseText"
+                       TextWrapping="Wrap" 
+                       Text="Exercise" 
+                       Margin="10, 10, 10, 10"
+                       FontSize="24"
+                       Grid.Row="0"/>
+            <TextBlock x:Name="titleText"
+                       Text="Title" 
+                       TextWrapping="Wrap" 
+                       Margin="10, 10, 10, 10" 
+                       FontSize="20"
+                       Grid.Row="1"/>
+            <TextBox x:Name="titleTextBox" 
+                     TextWrapping="Wrap" 
+                     Text="{Binding Title, Mode=TwoWay}"
+                     PlaceholderText="Enter title"
+                     Margin="10, 0, 10, 10" 
+                     FocusVisualPrimaryBrush="White" 
+                     Background="#66FFFFFF"
+                     Grid.Row="2"/>
+            <TextBlock x:Name="bodyTypeText" 
+                       TextWrapping="Wrap" 
+                       Text="Bodytype" 
+                       Margin="10, 10, 10, 10" 
+                       FontSize="20"
+                       Grid.Row="3"/>
+            <ComboBox x:Name="bodyTypeComboBox"
+                      ItemsSource="{Binding Source={StaticResource bodytypesViewSource}}"
+                      DisplayMemberPath="Name"
+                      Width="425" 
+                      Margin="10, 0, 10, 10" 
+                      Background="#66FFFFFF"
+                      Grid.Row="4"/>
+            <TextBlock x:Name="sourceText" 
+                       TextWrapping="Wrap" 
+                       Text="Source" 
+                       Margin="10, 10, 10, 10" 
+                       FontSize="20"
+                       Grid.Row="5"/>
+            <TextBox x:Name="sourceTextBox"
+                     Text="{Binding Source, Mode=TwoWay}"
+                     TextWrapping="Wrap" 
+                     PlaceholderText="Book/Magazine/Website" 
+                     Margin="10, 0, 10, 10" 
+                     FocusVisualPrimaryBrush="White" 
+                     Background="#66FFFFFF"
+                     Grid.Row="6"/>
+            <TextBlock x:Name="directionsText"  
+                       TextWrapping="Wrap" 
+                       Text="Directions" 
+                       Margin="10, 10, 10, 10" 
+                       FontSize="20"
+                       Grid.Row="7"/>
+            <TextBox x:Name="directionsTextBox"
+                     Text="{Binding Directions, Mode=TwoWay}"
+                     PlaceholderText="Enter directions..."
+                     TextWrapping="Wrap" 
+                     Margin="10, 0, 10, 10" 
+                     Background="#66FFFFFF"
+                     Grid.Row="8"/>
+        </Grid>
+        
+        <AppBarButton x:Name="saveButton" 
+                      DataContext="{Binding Exercise}"
+                      IsEnabled="{Binding IsValid, Mode=TwoWay}"
+                      Click="AddExercise"
+                      RelativePanel.Below="pageHeader"
+                      RelativePanel.AlignRightWith="cancelButton"
+                      Height="76" 
+                      Label="Save" 
+                      Margin="10, 10, 70, 10" 
+                      Icon="Save"/>
+
+        <AppBarButton x:Name="cancelButton"
+                      RelativePanel.Below="pageHeader"
+                      RelativePanel.AlignRightWithPanel="True"
+                      Click="{x:Bind ViewModel.GotoMainPage}"
+                      HorizontalAlignment="Left" 
+                      Height="76" 
+                      Icon="Cancel" 
+                      Label="Cancel" 
+                      VerticalAlignment="Top" 
+                      Margin="10, 10, 10, 10"/>
+
+    </RelativePanel>
+</Page>

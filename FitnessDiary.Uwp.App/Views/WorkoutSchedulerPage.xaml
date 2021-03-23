@@ -1,0 +1,163 @@
+﻿<Page x:Class="FitnessDiary.Uwp.App.Views.WorkoutSchedulerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:Template10.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:model="using:FitnessDiary.Model"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:vm="using:FitnessDiary.Uwp.App.ViewModels"
+      xmlns:Converters="using:FitnessDiary.Uwp.App.Converters" 
+      mc:Ignorable="d">
+
+    <Page.DataContext>
+        <vm:WorkoutSchedulerPageViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+
+    <Page.Resources>
+        <CollectionViewSource
+            x:Name="workoutEventsViewSource"
+            Source="{x:Bind ViewModel.WorkoutEvents}">
+        </CollectionViewSource>
+        <CollectionViewSource
+            x:Name="exercisesViewSource"
+            Source="{x:Bind ViewModel.Exercises}">
+        </CollectionViewSource>
+        <Converters:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter"/>
+    </Page.Resources>
+
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <controls:PageHeader x:Name="pageHeader" RelativePanel.AlignLeftWithPanel="True"
+                             RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True" Text="Fitness Diary" Content="Fitness Diary">
+
+            <!--  secondary commands -->
+            <controls:PageHeader.SecondaryCommands>
+                <AppBarButton Click="{x:Bind ViewModel.GotoSettings}" Label="Settings" />
+                <AppBarButton Click="{x:Bind ViewModel.GotoPrivacy}" Label="Privacy" />
+                <AppBarButton Click="{x:Bind ViewModel.GotoAbout}" Label="About" />
+            </controls:PageHeader.SecondaryCommands>
+
+
+        </controls:PageHeader>
+
+        <TextBlock x:Name="WorkoutSchedulerText" 
+                   RelativePanel.Below="pageHeader"
+                   RelativePanel.AlignLeftWithPanel="True"
+                   Height="53" 
+                   TextWrapping="Wrap" 
+                   Text="Workout Schedule" 
+                   Margin="10, 10, 10, 10" 
+                   FocusVisualPrimaryBrush="White" 
+                   FontSize="36"/>
+
+        <AppBarButton x:Name="addSessionButton" 
+                      RelativePanel.Below="pageHeader"
+                      RelativePanel.AlignRightWithPanel="true"
+                      HorizontalAlignment="Left" 
+                      Height="76" 
+                      Icon="Add"
+                      Click="AddSession"
+                      VerticalAlignment="Top" 
+                      Margin="10, 10, 10, 10" 
+                      Label="Add Session"/>
+
+        <ListView x:Name="sessionList"
+                  RelativePanel.AlignLeftWithPanel="True"
+                  RelativePanel.Below="WorkoutSchedulerText"
+                  IsItemClickEnabled="false"
+                  ItemsSource="{Binding Source={StaticResource workoutEventsViewSource}}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Title}" Width="400" FontSize="25" Margin="10, 10, 10, 10" TextAlignment="Left"/>
+                        <ListView x:Name="sessionListSessions"  
+                                  ItemsSource="{Binding Sessions}"
+                                  IsItemClickEnabled="True">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="model:Session">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="ExerciseID: " FontSize="15" TextAlignment="Right" Margin="0, 10, 10, 10"/>
+                                            <TextBlock Text="{Binding ExerciseID}" FontSize="15" Grid.Column="1" Margin="0, 10, 10, 10"/>
+                                            <TextBlock Text="Sets: " FontSize="15" Grid.Row="1" TextAlignment="Right" Margin="0, 10, 10, 10"/>
+                                            <TextBlock Text="{Binding Sets}" FontSize="15" Grid.Column="1" Grid.Row="1" Margin="0, 10, 10, 10"/>
+                                            <TextBlock Text="Repetitions: " FontSize="15" Grid.Row="2" TextAlignment="Right" Margin="0, 10, 10, 10"/>
+                                            <TextBlock Text="{Binding Repetitions}" FontSize="15" Grid.Column="1" Grid.Row="2" Margin="0, 10, 10, 10"/>
+                                            <TextBlock Text="Notes: " FontSize="15" Grid.Row="3" TextAlignment="Right" Margin="0, 10, 10, 10"/>
+                                            <TextBlock Text="{Binding Notes}" FontSize="15" Grid.Column="1" Grid.Row="3" Margin="0, 10, 10, 10"/>
+                                            <Button Content="Edit" Click="EditSession"  CommandParameter="{Binding SessionID}" Grid.Row="4"/>
+                                            <Button Content="Delete" Click="DeleteSession"  CommandParameter="{Binding SessionID}" Grid.Row="4" Grid.Column="1"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Padding" Value="10" />
+                                    <Setter Property="Margin" Value="10" />
+                                    <Setter Property="BorderThickness" Value="1" />
+                                    <Setter Property="Background" Value="Gray"/>
+                                    <Setter Property="BorderBrush" Value="White"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Padding" Value="10" />
+                    <Setter Property="Margin" Value="10" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="Background" Value="LightGray"/>
+                    <Setter Property="BorderBrush" Value="White"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+
+        <ContentDialog x:Name="addSessionContentDialog"
+                       RelativePanel.Below="pageHeader"
+                       RelativePanel.AlignLeftWithPanel="True"
+                       RelativePanel.AlignRightWithPanel="True"
+                       IsPrimaryButtonEnabled="true"
+                       SecondaryButtonText="Cancel" IsSecondaryButtonEnabled="True"
+                       Margin="0, 50, 0, 0">
+            <Grid Padding="10, 0, 0, 0" Margin="0, 10, 0, 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Choose a date" Margin="0, 10, 10, 10" TextAlignment="Right"/>
+                <CalendarDatePicker x:Name="datePicker" Grid.Column="1"  Margin="0, 10, 10, 10" Date="{Binding Date, Mode=TwoWay, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"/>
+                <TextBlock Text="Choose a Exercise" Margin="0, 10, 10, 10" Grid.Row="1" TextAlignment="Right"/>
+                <ComboBox x:Name="exercisePicker" Grid.Row="1" Grid.Column="1" Margin="0, 5, 10, 10" DisplayMemberPath="Title"/>
+                <TextBlock Text="Sets" Margin="0, 10, 10, 10" Grid.Row="2" TextAlignment="Right"/>
+                <TextBox x:Name="setsTextBox" Margin="0, 5, 10, 10" Grid.Row="2" Grid.Column="1" Text="{Binding Sets, Mode=TwoWay}"/>
+                <TextBlock Text="Repetitions" Margin="0, 10, 10, 10" Grid.Row="3" TextAlignment="Right"/>
+                <TextBox x:Name="repetitionsTextBox" Margin="0, 5, 10, 10" Grid.Row="3" Grid.Column="1" Text="{Binding Repetitions, Mode=TwoWay}"/>
+                <TextBlock Text="Notes" Margin="0, 10, 10, 10" Grid.Row="4" TextAlignment="Right"/>
+                <TextBox x:Name="notesTextBox" Margin="0, 5, 10, 10" Grid.Row="4" Grid.Column="1" Text="{Binding Notes, Mode=TwoWay}"/>
+            </Grid>
+        </ContentDialog>
+
+    </RelativePanel>
+</Page>
