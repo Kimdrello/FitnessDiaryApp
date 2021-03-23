@@ -15,9 +15,9 @@ Appen MÅ kjøres på skolens nettverk, altså at man befinner seg på høgskole
 
 Hvis det ønskes å kjøre Web APIet før man kjører appen så sørg for å fjerne denne connection stringen fra web.config i APIet og app.config i DataAccess:
 
-<connectionStrings>
+"<connectionStrings>
     <add name="FitnessDiary.DataAccess.FitnessDiaryContext" connectionString="Data Source=donau.hiof.no;Initial Catalog=kimandre;Persist Security Info=True;User ID=kimandre;Password=7dS4d9" providerName="System.Data.SqlClient" />
-  </connectionStrings>
+</connectionStrings>"
 
 Dette for å slippe at donau databasen blir slettet ved et uhell.
 
