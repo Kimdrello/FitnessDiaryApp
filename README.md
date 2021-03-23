@@ -3,9 +3,11 @@
 Kopi av prosjektbeskrivelse:
 
 FitnessDiaryApp
+
 By Kim-Andre Engebretsen
 
 Navn: Kim-Andre Engebretsen
+
 Tittel: FitnessDiaryApp
 
 For at skal kjøre:
