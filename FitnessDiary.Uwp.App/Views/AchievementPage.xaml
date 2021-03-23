@@ -1,0 +1,52 @@
+﻿<Page x:Class="FitnessDiary.Uwp.App.Views.AchievementPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:Template10.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:vm="using:FitnessDiary.Uwp.App.ViewModels" mc:Ignorable="d">
+
+    <Page.DataContext>
+        <vm:AchievementPageViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <controls:PageHeader x:Name="pageHeader" RelativePanel.AlignLeftWithPanel="True"
+                             RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True" Text="Fitness Diary" Content="Fitness Diary">
+
+            <!--  secondary commands -->
+            <controls:PageHeader.SecondaryCommands>
+                <AppBarButton Click="{x:Bind ViewModel.GotoSettings}" Label="Settings" />
+                <AppBarButton Click="{x:Bind ViewModel.GotoPrivacy}" Label="Privacy" />
+                <AppBarButton Click="{x:Bind ViewModel.GotoAbout}" Label="About" />
+            </controls:PageHeader.SecondaryCommands>
+
+
+        </controls:PageHeader>
+
+        <TextBlock x:Name="AchievementText" 
+             RelativePanel.Below="pageHeader"
+             RelativePanel.AlignLeftWithPanel="True"
+             Height="53" 
+             Width="400"
+             TextWrapping="Wrap" 
+             Text="Achievements" 
+             Margin="10, 10, 10, 10" 
+             FocusVisualPrimaryBrush="White" 
+             FontSize="36"/>
+
+        <TextBlock x:Name="CurrentPointsText" 
+             RelativePanel.Below="pageHeader"
+             RelativePanel.AlignLeftWith="AchievementText"
+             Height="53" 
+             Width="400"
+             TextWrapping="Wrap" 
+             Text="Current points:" 
+             Margin="400, 20, 10, 10" 
+             FocusVisualPrimaryBrush="White" 
+             FontSize="30"/>
+
+    </RelativePanel>
+</Page>
